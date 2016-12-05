@@ -13,7 +13,7 @@ import requests
 from lxml import html
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
-requests.packages.urllib3.disable_warnings(InSecureRequestWarning)
+requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 SEED_URL = "https://www.zhihu.com/people/gaoming623/answers"
@@ -26,9 +26,8 @@ HTTP_STATUS_CODE_200 = 200
 class Crawler():
     
     def __init__(self, seed_url):
-        self.seed_url = seed_url
         self.headers = {
-            "User-Agent": USER_AGENT
+            "User-Agent": USER_AGENT,
             "Referer": ZHIHU_REFERER
         }
         self.cookies = {
@@ -40,6 +39,8 @@ class Crawler():
             "d_c0": "AECA7v-aPwqPTiIbemmIQ8abhJy7bdD2VgE=|1468847182",
             "cap_id": "N2U1NmQwODQ1NjFiNGI2Yzg2YTE2NzJkOTU5N2E0NjI=|1480901160|fd59e2ed79faacc2be1010687d27dd559ec1552a"
         }
+
+        self.send_request(seed_url)
 
     def send_request(self, url):
         # Send a request through requests library and get HTML source
@@ -55,6 +56,19 @@ class Crawler():
             self.html_parser(html_source)
             
     def html_parser(self, html_source):
+        tree = html.fromstring(html_source)
+        username = self.get_username(tree)
+        brief_info = self.get_brief_info(tree)
+        industry = self.get_industry(tree)
+        profession = self.get_profession(tree)
+        education = self.get_education(tree)
+        major = self.get_major(tree)
+        answer_count = self.get_answer_count(tree)
+        article_count = self.get_article_count(tree)
+        ask_question_count = self.get_question_count(tree)
+        collection_count = self.get_collection_count(tree)
+        follower_count = self.get_follower_count(tree)
+        followed_count = self.get_followed_count(tree)
         return
 
     def get_avatar(self, tree):
@@ -62,49 +76,54 @@ class Crawler():
         
     def get_username(self, tree):
         username_xpath = "//span[@class='ProfileHeader-name']/text()"
-        return tree.xpath(username_xpath)
+        return tree.xpath(username_xpath)[0]
 
     def get_brief_info(self, tree):
         brief_info_xpath = "//span[@class='RichText ProfileHeader-headline']/text()"
-        return tree.xpath(brief_info_xpath)
+        return tree.xpath(brief_info_xpath)[0]
 
-    def get_residence(self, tree):
-        residence_xpath = ""
-        return
-
+    def get_industry(self, tree):
+        industry_xpath = "//div[@class='ProfileHeader-infoItem'][1]/text()"
+        return tree.xpath(industry_xpath)[0]
+    
     def get_profession(self, tree):
-        profession_xpath = ""
-        return
+        profession_xpath = "//div[@class='ProfileHeader-infoItem'][1]/text()"
+        return tree.xpath(profession_xpath)[1]
+
 
     def get_education(self, tree):
-        education_xpath = ""
-        return
+        education_xpath = "//div[@class='ProfileHeader-infoItem'][2]/text()"
+        return tree.xpath(education_xpath)[0]
 
-    def get_detail_info(self, tree):
-        detail_info_xpath = ""
-        return
+    def get_major(self, tree):
+        major_xpath = "//div[@class='ProfileHeader-infoItem'][2]/text()"
+        return tree.xpath(major_xpath)[1]
 
     def get_answer_count(self, tree):
-        answer_count_xpath = ""
-        return
+        answer_count_xpath = "//li[@class='Tabs-item' and @aria-controls='Profile-answers']/a/span[@class='Tabs-meta']/text()"
+        return tree.xpath(answer_count_xpath)[0]
 
     def get_article_count(self, tree):
-        article_count_xpath = ""
-        return
+        article_count_xpath = "//li[@class='Tabs-item' and @aria-controls='Profile-asks']/a/span[@class='Tabs-meta']/text()"
+        return tree.xpath(article_count_xpath)[0]
 
-    def get_question_count(self, tree):
-        question_count_xpath = ""
-        return
+    def get_ask_question_count(self, tree):
+        ask_question_count_xpath = "//li[@class='Tabs-item' and @aria-controls='Profile-asks']/a/span[@class='Tabs-meta']/text()"
+        return tree.xpath(ask_question_count_xpath)[0]
 
     def get_collection_count(self, tree):
-        collection_count_xpath = ""
-        return
+        collection_count_xpath = "//a[@class='Profile-followStatus'][1]/div/div[@class='Profile-followStatusValue']/text()"
+        return tree.xpath(collection_count_xpath)[0]
 
     def get_follower_count(self, tree):
-        follower_count_xpath = ""
-        return
+        follower_count_xpath = "//a[@class='Profile-followStatus'][2]/div/div[@class='Profile-followStatusValue']/text()"
+        return tree.xpath(follower_count_xpath)[0]
 
     def get_followed_count(self, tree):
-        followed_count_xpath = ""
-        return
+        followed_count_xpath = "//a[@class='Profile-followStatus'][1]/div/div[@class='Profile-followStatusValue']/text()"
+        return tree.xpath(followed_count_xpath)[0]
         
+# Cases here
+
+if __name__ == "__main__":
+    crawler = Crawler(SEED_URL)
