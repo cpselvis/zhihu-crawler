@@ -69,6 +69,11 @@ class Crawler():
         collection_count = self.get_collection_count(tree)
         follower_count = self.get_follower_count(tree)
         followed_count = self.get_followed_count(tree)
+        follow_live_count = self.get_follow_live_count(tree)
+        follow_topic_count = self.get_follow_topic_count(tree)
+        follow_column_count = self.get_follow_column_count(tree)
+        follow_question_count = self.get_follow_question_count(tree)
+        follow_collection_count = self.get_follow_collection_count(tree)
         return
 
     def get_avatar(self, tree):
@@ -122,7 +127,27 @@ class Crawler():
     def get_followed_count(self, tree):
         followed_count_xpath = "//a[@class='Profile-followStatus'][1]/div/div[@class='Profile-followStatusValue']/text()"
         return tree.xpath(followed_count_xpath)[0]
-        
+
+    def get_follow_live_count(self, tree):
+        follow_live_count_xpath = "//a[@class='Profile-lightItem'][1]/span[@class='Profile-lightItemValue']/text()"
+        return tree.xpath(follow_live_count_xpath)[0]
+
+    def get_follow_topic_count(self, tree):
+        follow_topic_count_xpath = "//a[@class='Profile-lightItem'][2]/span[@class='Profile-lightItemValue']/text()"
+        return tree.xpath(follow_topic_count_xpath)[0]
+
+    def get_follow_column_count(self, tree):
+        follow_column_count_xpath =  "//a[@class='Profile-lightItem'][3]/span[@class='Profile-lightItemValue']/text()"
+        return tree.xpath(follow_column_count_xpath)[0]
+
+    def get_follow_question_count(self, tree):
+        follow_question_count_xpath = "//a[@class='Profile-lightItem'][4]/span[@class='Profile-lightItemValue']/text()"
+        return tree.xpath(follow_question_count_xpath)[0]
+
+    def get_follow_collection_count(self, tree):
+        follow_collection_count_xpath = "//a[@class='Profile-lightItem'][5]/span[@class='Profile-lightItemValue']/text()"
+        return tree.xpath(follow_collection_count_xpath)[0]
+    
 # Cases here
 
 if __name__ == "__main__":
