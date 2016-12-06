@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """
@@ -10,10 +11,16 @@ profession, follower and folling count.
 """
 
 import requests
+import sys
+from Queue import Queue
 from lxml import html
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
 SEED_URL = "https://www.zhihu.com/people/gaoming623/answers"
@@ -39,9 +46,26 @@ class Crawler():
             "d_c0": "AECA7v-aPwqPTiIbemmIQ8abhJy7bdD2VgE=|1468847182",
             "cap_id": "N2U1NmQwODQ1NjFiNGI2Yzg2YTE2NzJkOTU5N2E0NjI=|1480901160|fd59e2ed79faacc2be1010687d27dd559ec1552a"
         }
+        # Url queue to store crawler task.
+        self.url_queue = Queue()
+        # Use hash set to store visited urls
 
-        self.send_request(seed_url)
+    def start(self, seed_url):
+        # Add seed url to a url queue
+        self.url_queue.put(seed_url)
+        
+        # Begin task
+        self.task_master()
 
+    def task_master(self):
+        # Never stop crawler task when there exist url in url task queue.
+        while(True):
+            if (self.url_queue.qsize() > 0):
+                curr_url = self.url_queue.get()
+                self.send_request(curr_url)
+            else:
+                break
+        
     def send_request(self, url):
         # Send a request through requests library and get HTML source
         # file content
@@ -65,7 +89,7 @@ class Crawler():
         major = self.get_major(tree)
         answer_count = self.get_answer_count(tree)
         article_count = self.get_article_count(tree)
-        ask_question_count = self.get_question_count(tree)
+        ask_question_count = self.get_ask_question_count(tree)
         collection_count = self.get_collection_count(tree)
         follower_count = self.get_follower_count(tree)
         followed_count = self.get_followed_count(tree)
@@ -74,8 +98,40 @@ class Crawler():
         follow_column_count = self.get_follow_column_count(tree)
         follow_question_count = self.get_follow_question_count(tree)
         follow_collection_count = self.get_follow_collection_count(tree)
+
+        print "*"*60
+        print "用户名：%s\n" % username
+        print "个人简介：%s\n" % brief_info
+        print "所处行业：%s\n" % industry
+        print "毕业学校：%s\n" % education
+        print "主修专业：%s\n" % major
+        print "回答数：%s\n" % answer_count
+        print "文章数：%s\n" % article_count
+        print "提问数：%s\n" % ask_question_count
+        print "收藏数：%s\n" % collection_count
+        print "被关注数：%s\n" % follower_count
+        print "关注数：%s\n" % followed_count
+        print "关注直播数：%s\n" % follow_live_count
+        print "关注话题数：%s\n" % follow_topic_count
+        print "关注专栏数：%s\n" % follow_column_count
+        print "关注问题数：%s\n" % follow_question_count
+        print "关注收藏夹数：%s\n" % follow_collection_count
+        print "*"*60
+        
+        # Extract urls
+        self.extract_urls(tree)
         return
 
+    def extract_urls(self, tree):
+        followed_xpath = "//span[@class='UserLink UserItem-name']/div/div/a/@href"
+        followed_user_list = tree.xpath(followed_xpath)
+
+        # Iterate followed list and put new url to url task queue.
+        for followed_user_item in followed_user_list:
+            new_url = "https://www.zhihu.com" + followed_user_item
+            self.url_queue.put(new_url)
+
+    
     def get_avatar(self, tree):
         return
         
@@ -147,8 +203,9 @@ class Crawler():
     def get_follow_collection_count(self, tree):
         follow_collection_count_xpath = "//a[@class='Profile-lightItem'][5]/span[@class='Profile-lightItemValue']/text()"
         return tree.xpath(follow_collection_count_xpath)[0]
-    
+        
 # Cases here
 
 if __name__ == "__main__":
     crawler = Crawler(SEED_URL)
+    crawler.start(SEED_URL)
