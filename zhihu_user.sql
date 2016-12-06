@@ -19,7 +19,7 @@ CREATE TABLE `t_user` (
   `followed_count` int(10) unsigned DEFAULT 0 COMMENT '关注数',
   `follow_live_count` int(10) unsigned DEFAULT 0 COMMENT '关注直播数',
   `follow_topic_count` int(10) unsigned DEFAULT 0 COMMENT '关注话题数',
-  `follow_columen_count` int(10) unsigned DEFAULT 0 COMMENT '关注专栏数',
+  `follow_column_count` int(10) unsigned DEFAULT 0 COMMENT '关注专栏数',
   `follow_question_count` int(10) unsigned DEFAULT 0 COMMENT '关注问题数',
   `follow_collection_count` int(10) unsigned DEFAULT 0 COMMENT '关注收藏夹数',
   `gmt_create` datetime NOT NULL COMMENT '创建时间',   
