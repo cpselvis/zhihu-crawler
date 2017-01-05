@@ -16,6 +16,7 @@ import datetime
 from Queue import Queue
 from lxml import html
 from mysql import MySQL
+from bloom_filter import BloomFilter
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -23,6 +24,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 import sys
 reload(sys)
 sys.setdefaultencoding('utf8')
+
+
+# Use bloom filter to check if a url has beed visited.
+bf = BloomFilter()
 
 
 ## Global variable
@@ -40,6 +45,7 @@ DATABASE_CONFIG = {
     "db": "zhihu_user",
     "charset": "utf8"
 }
+
 
 class Crawler():
     
@@ -59,13 +65,12 @@ class Crawler():
         }
         # Url queue to store crawler task.
         self.url_queue = Queue()
-        # Use hash set to store visited urls
-        self.visited_url = set()
         
     def start(self, seed_url):
         # Add seed url to a url queue
         self.url_queue.put(seed_url)
-        self.visited_url.add(seed_url)
+        # Add seed url to bloomfilter bit vector.
+        bf.add(seed_url)
         
         # Begin task
         self.task_master()
@@ -150,9 +155,12 @@ class Crawler():
         # Iterate followed list and put new url to url task queue.
         for followed_user_item in followed_user_list:
             new_url = "https://www.zhihu.com" + followed_user_item
-            if new_url not in self.visited_url:
+            # If url not visited before (check bloom filter)
+            if not bf.contains(new_url):
                 self.url_queue.put(new_url)
-                self.visited_url.add(new_url)
+                bf.add(new_url)
+            else:
+                print "Bloom filter judge " + new_url + " visited, this record will be ignored."
 
     def parse_xpath_source(self, source, index, is_int):
         if source and index < len(source):
