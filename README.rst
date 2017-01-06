@@ -10,6 +10,10 @@ Technicial stack
 - `murmurhash <https://en.wikipedia.org/wiki/MurmurHash>`_.
 - MySQL
 
+Documentation
+-------------
+
+Fantastic documentation is available at https://github.com/cpselvis/zhihu-crawler/wiki/%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%80%A7%E8%83%BD%E7%88%AC%E8%99%AB/ .
 
 
 How to Contribute
