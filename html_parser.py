@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 
 """
-zhihu_crawler.crawler
+zhihu_crawler.html_parser
 ~~~~~~~~~~~~~~~~
 
 Parse html content with xpath.
 """
 
 class HtmlParser:
-    def __init__(self):
-
 
     def parse_xpath_source(self, source, index, is_int):
         if source and index < len(source):

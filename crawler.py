@@ -103,25 +103,42 @@ class Crawler():
         tree = html.fromstring(html_source)
         parser = HtmlParser()
 
+        username = parser.get_username(tree)
+        brief_info = parser.get_brief_info(tree)
+        industry = parser.get_industry(tree)
+        education = parser.get_education(tree)
+        major = parser.get_major(tree)
+        answer_count = parser.get_answer_count(tree)
+        article_count = parser.get_article_count(tree)
+        ask_question_count = parser.get_ask_question_count(tree)
+        collection_count = parser.get_collection_count(tree)
+        follower_count = parser.get_follower_count(tree)
+        followed_count = parser.get_followed_count(tree)
+        follow_live_count = parser.get_follow_live_count(tree)
+        follow_topic_count = parser.get_follow_topic_count(tree)
+        follow_column_count = parser.get_follow_column_count(tree)
+        follow_question_count = parser.get_follow_question_count(tree)
+        follow_collection_count = parser.get_follow_collection_count(tree)
+
         now = datetime.datetime.now()
         current_time = now.strftime("%Y-%m-%d %H:%M:%S")
         print "*"*60
-        print "用户名：%s\n" % parser.get_username(tree)
-        print "个人简介：%s\n" % parser.get_brief_info(tree)
-        print "所处行业：%s\n" % parser.get_industry(tree)
-        print "毕业学校：%s\n" % parser.get_education(tree)
-        print "主修专业：%s\n" % parser.get_major(tree)
-        print "回答数：%s\n" % parser.get_answer_count(tree)
-        print "文章数：%s\n" % parser.get_article_count(tree)
-        print "提问数：%s\n" % parser.get_ask_question_count(tree)
-        print "收藏数：%s\n" % parser.get_collection_count(tree)
-        print "被关注数：%s\n" % parser.get_follower_count(tree)
-        print "关注数：%s\n" % parser.get_followed_count(tree)
-        print "关注直播数：%s\n" % parser.get_follow_live_count(tree)
-        print "关注话题数：%s\n" % parser.get_follow_topic_count(tree)
-        print "关注专栏数：%s\n" % parser.get_follow_column_count(tree)
-        print "关注问题数：%s\n" % parser.get_follow_question_count(tree)
-        print "关注收藏夹数：%s\n" % parser.get_follow_collection_count(tree)
+        print "用户名：%s\n" % username
+        print "个人简介：%s\n" % brief_info
+        print "所处行业：%s\n" % industry
+        print "毕业学校：%s\n" % education
+        print "主修专业：%s\n" % major
+        print "回答数：%s\n" % answer_count
+        print "文章数：%s\n" % article_count
+        print "提问数：%s\n" % ask_question_count
+        print "收藏数：%s\n" % collection_count
+        print "被关注数：%s\n" % follower_count
+        print "关注数：%s\n" % followed_count
+        print "关注直播数：%s\n" % follow_live_count
+        print "关注话题数：%s\n" % follow_topic_count
+        print "关注专栏数：%s\n" % follow_column_count
+        print "关注问题数：%s\n" % follow_question_count
+        print "关注收藏夹数：%s\n" % follow_collection_count
         print "当前时间：%s\n" % current_time
         print "*"*60
 
