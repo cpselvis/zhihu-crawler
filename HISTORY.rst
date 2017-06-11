@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+0.5.0 (2017-6-11)
++++++++++++++++++++
+
+- Seperate html parser part to a single file.
+
 0.4.0 (2017-1-5)
 +++++++++++++++++++
 
@@ -14,13 +19,13 @@ Release History
 - Design database and table scheme.
 - Use mysql as persistent layer, store user data.
 - Encapsulate python mysql operate library.
-  
+
 0.2.0 (2016-12-6)
 +++++++++++++++++++
 
 - Memory queue to support BFS crawler.
 - Hash set to to story visited urls, avoid duplicate visits.
-  
+
 0.1.0 (2016-12-6)
 +++++++++++++++++++
 
