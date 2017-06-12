@@ -18,6 +18,7 @@ from lxml import html
 from mysql import MySQL
 from html_parser import HtmlParser
 from bloom_filter import BloomFilter
+from proxy import Proxy
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -29,6 +30,9 @@ sys.setdefaultencoding('utf8')
 
 # Use bloom filter to check if a url has beed visited.
 bf = BloomFilter()
+
+# Use proxy ip.
+p = Proxy()
 
 
 ## Global variable
@@ -87,11 +91,17 @@ class Crawler():
 
     def send_request(self, url):
         url = url + "/following"
+
+        # Get a random proxy from proxy url.
+        proxies = p.get_random_ip()
+
         # Send a request through requests library and get HTML source
         # file content
         try:
-            r = requests.get(url, cookies = self.cookies, headers = self.headers)
-        except:
+            print "当前使用的代理ip是：%s\n" % proxies
+            r = requests.get(url, cookies = self.cookies, headers = self.headers, proxies = proxies)
+        except Exception as e:
+            print e
             return
         html_source = r.text
 
