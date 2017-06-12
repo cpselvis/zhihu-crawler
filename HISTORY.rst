@@ -3,6 +3,12 @@
 Release History
 ---------------
 
+0.6.0 (2017-6-12)
++++++++++++++++++++
+
+- Print exception when error.
+- Use proxy ip to avoid crawler against replies.
+
 0.5.0 (2017-6-11)
 +++++++++++++++++++
 
