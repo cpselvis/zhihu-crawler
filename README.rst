@@ -11,6 +11,14 @@ Technicial stack
 - `Anti crawler strategy`
 - MySQL
 
+Setup
+-------------
+::
+    git clone https://github.com/cpselvis/zhihu-crawler.git
+    cd zhihu-crawler
+    pip install -r requirements.txt
+    python crawler.py
+
 Documentation
 -------------
 
