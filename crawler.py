@@ -13,7 +13,8 @@ profession, follower and folling count.
 import requests
 import sys
 import datetime
-from Queue import Queue
+from rq import Queue
+from worker import conn
 from lxml import html
 from mysql import MySQL
 from html_parser import HtmlParser
@@ -34,9 +35,11 @@ bf = BloomFilter()
 # Use proxy ip.
 p = Proxy()
 
+# Redis queue
+q = Queue(connection=conn)
+
 
 ## Global variable
-SEED_URL = "https://www.zhihu.com/people/gaoming623"
 
 USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.3"
 ZHIHU_REFERER = "https://www.zhihu.com/"
@@ -54,7 +57,7 @@ DATABASE_CONFIG = {
 
 class Crawler():
 
-    def __init__(self, seed_url):
+    def __init__(self):
         self.headers = {
             "User-Agent": USER_AGENT,
             "Referer": ZHIHU_REFERER
@@ -68,26 +71,12 @@ class Crawler():
             "d_c0": "AECA7v-aPwqPTiIbemmIQ8abhJy7bdD2VgE=|1468847182",
             "cap_id": "N2U1NmQwODQ1NjFiNGI2Yzg2YTE2NzJkOTU5N2E0NjI=|1480901160|fd59e2ed79faacc2be1010687d27dd559ec1552a"
         }
-        # Url queue to store crawler task.
-        self.url_queue = Queue()
 
     def start(self, seed_url):
-        # Add seed url to a url queue
-        self.url_queue.put(seed_url)
+        # Add initial job to redis queue.
+        q.enqueue(self.send_request, seed_url)
         # Add seed url to bloomfilter bit vector.
         bf.add(seed_url)
-
-        # Begin task
-        self.task_master()
-
-    def task_master(self):
-        # Never stop crawler task when there exist url in url task queue.
-        while(True):
-            if (self.url_queue.qsize() > 0):
-                curr_url = self.url_queue.get()
-                self.send_request(curr_url)
-            else:
-                break
 
     def send_request(self, url):
         url = url + "/following"
@@ -170,13 +159,7 @@ class Crawler():
             new_url = "https://www.zhihu.com" + followed_user_item
             # If url not visited before (check bloom filter)
             if not bf.contains(new_url):
-                self.url_queue.put(new_url)
+                q.enqueue(self.send_request, new_url)
                 bf.add(new_url)
             else:
                 print "Bloom filter judge " + new_url + " visited, this record will be ignored."
-
-# Cases here
-
-if __name__ == "__main__":
-    crawler = Crawler(SEED_URL)
-    crawler.start(SEED_URL)
