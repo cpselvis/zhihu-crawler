@@ -7,13 +7,16 @@ Technicial stack
 - `requests <https://github.com/kennethreitz/requests>`_.
 - `Bloom Filter <https://en.wikipedia.org/wiki/Bloom_filter>`_.
 - `XPath <https://en.wikipedia.org/wiki/XPath>`_.
-- `murmurhash <https://en.wikipedia.org/wiki/MurmurHash>`_.
-- `Anti crawler strategy`
+- `rq <https://github.com/nvie/rq>`_.
 - MySQL
+- `Anti crawler strategy`
 
 Setup
 -------------
+
+
 ::
+
     git clone https://github.com/cpselvis/zhihu-crawler.git
     cd zhihu-crawler
     pip install -r requirements.txt
