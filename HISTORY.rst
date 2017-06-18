@@ -3,6 +3,11 @@
 Release History
 ---------------
 
+0.7.0 (2017-6-18)
++++++++++++++++++++
+
+- Use redis queue to support distributed crawler.
+
 0.6.0 (2017-6-12)
 +++++++++++++++++++
 
