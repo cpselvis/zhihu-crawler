@@ -25,7 +25,7 @@ Setup
 Documentation
 -------------
 
-Fantastic documentation is available at `WIKI <https://github.com/cpselvis/zhihu-crawler/wiki/%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E5%AE%9E%E7%8E%B0%E9%AB%98%E6%80%A7%E8%83%BD%E7%88%AC%E8%99%AB/>`_.
+Fantastic documentation is available at `WIKI <http://www.cnblogs.com/cpselvis/p/7001137.html`_.
 
 
 How to Contribute
