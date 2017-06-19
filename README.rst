@@ -25,7 +25,7 @@ Setup
 Documentation
 -------------
 
-Fantastic documentation is available at `WIKI <http://www.cnblogs.com/cpselvis/p/7001137.html`_.
+Fantastic documentation is available at `WIKI <http://www.cnblogs.com/cpselvis/p/7001137.html>`_.
 
 
 How to Contribute
