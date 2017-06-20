@@ -20,7 +20,12 @@ Setup
     git clone https://github.com/cpselvis/zhihu-crawler.git
     cd zhihu-crawler
     pip install -r requirements.txt
-    python crawler.py
+    
+    # Run serveral workers and listen task queue.
+    python worker.py
+    
+    # Begin task
+    python scheduler.py
 
 Documentation
 -------------
